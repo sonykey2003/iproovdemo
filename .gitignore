@@ -1,0 +1,16 @@
+.gradle
+*local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+build/
+/waterloo-bank/.gradle
+/waterloo-bank/local.properties
+/waterloo-bank/.idea/workspace.xml
+/waterloo-bank/.idea/libraries
+.DS_Store
+/waterloo-bank/build
+/waterloo-bank/captures
+/waterloo-bank/build/
