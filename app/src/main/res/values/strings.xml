@@ -2,6 +2,8 @@
     <string name="app_name">Example App</string>
 
     <string name="login">Login</string>
+    <string name="enter_user_id">Enter Your Username</string>
+    <string name="start_onboarding">Start Onboarding</string>
     <string name="register">Register</string>
     <string name="java_version_format">SDK v%1$s (Java)</string>
     <string name="kotlin_version_format">SDK v%1$s (Kotlin)</string>
@@ -14,7 +16,7 @@
     <string name="canceled">Canceled</string>
     <string name="success">Success</string>
     <string name="token_format">Token: %1$s</string>
-    <string name="enrol_gpa">Enrol with Genuine Presence Assurance</string>
+    <string name="enrol_gpa">Start Onboarding</string>
     <string name="verify_gpa">Verify with Genuine Presence Assurance</string>
     <string name="verify_la">Verify with Liveness Assurance</string>
 </resources>
