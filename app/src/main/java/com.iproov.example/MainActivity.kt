@@ -96,17 +96,25 @@ class MainActivity : AppCompatActivity() {
     private fun showSuccessDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_success, null)
         val imageView = dialogView.findViewById<ImageView>(R.id.successImage)
+        val nextButton = dialogView.findViewById<Button>(R.id.nextButton)
 
         // Set the success image
         imageView.setImageBitmap(decodeSampledBitmapFromResource(resources, R.drawable.success, 500, 500))
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
-            .setCancelable(true)
+            .setCancelable(false)  // Prevent dismissing by tapping outside
             .create()
+
+        // Handle Next button click
+        nextButton.setOnClickListener {
+            IProov.session?.cancel()  // Close the session safely
+            dialog.dismiss()  // Close the dialog
+        }
 
         dialog.show()
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
