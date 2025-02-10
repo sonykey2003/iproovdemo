@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                         withContext(Dispatchers.Main) {
                             when (state) {
                                 is IProov.State.Success -> {
-                                    onResult(getString(R.string.success), "")
+                                    showSuccessDialog() // Display success image
                                     retryCount = 0
                                 }
                                 is IProov.State.Failure -> {
@@ -92,6 +92,20 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
         }
+    }
+    private fun showSuccessDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_success, null)
+        val imageView = dialogView.findViewById<ImageView>(R.id.successImage)
+
+        // Set the success image
+        imageView.setImageBitmap(decodeSampledBitmapFromResource(resources, R.drawable.success, 500, 500))
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialog.show()
     }
 
     override fun onDestroy() {

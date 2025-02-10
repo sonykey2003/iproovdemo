@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Example App</string>
+    <string name="unknown_error_image_desc">Unknown Error</string>
+    <string name="try_again">Please try again!</string>
+    <string name="show_tips">Show tips</string>
 
     <string name="login">Login</string>
     <string name="enter_user_id">Enter Your Username</string>
