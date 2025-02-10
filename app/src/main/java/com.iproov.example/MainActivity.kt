@@ -3,6 +3,8 @@ package com.iproov.example
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +24,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.content.res.Resources
+
 
 class MainActivity : AppCompatActivity() {
     private val job = SupervisorJob()
@@ -40,7 +46,6 @@ class MainActivity : AppCompatActivity() {
             throw IllegalStateException("You must set the API_KEY and SECRET values in the Constants.kt file!")
         }
 
-        // Removed reference to startOnboardingButton since it doesn't exist
         binding.usernameEditText.visibility = View.VISIBLE
         binding.startVerificationButton.setOnClickListener {
             val username = binding.usernameEditText.text.toString().trim()
@@ -104,7 +109,9 @@ class MainActivity : AppCompatActivity() {
             try {
                 val token = apiClientFuel.getToken(assuranceType, claimType, username)
                 if (!job.isActive) return@launch
-                startScan(token)
+                withContext(Dispatchers.Main) {
+                    showScanningTipsAndStart(token)
+                }
             } catch (ex: Exception) {
                 withContext(Dispatchers.Main) {
                     ex.printStackTrace()
@@ -118,6 +125,27 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showScanningTipsAndStart(token: String) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_scanning_tips, null)
+        val imageView = dialogView.findViewById<ImageView>(R.id.scanningTipsImage)
+        val acknowledgeButton = dialogView.findViewById<Button>(R.id.acknowledgeButton)
+
+        imageView.setImageBitmap(decodeSampledBitmapFromResource(resources, R.drawable.scanning_tips, 500, 500))
+        // Ensure this image is in res/drawable
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        acknowledgeButton.setOnClickListener {
+            dialog.dismiss()
+            startScan(token) // Proceed to iProov scanning
+        }
+
+        dialog.show()
     }
 
     @Throws(SessionCannotBeStartedTwiceException::class)
@@ -137,4 +165,30 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.cancel() }
             .show()
     }
+}
+
+private fun decodeSampledBitmapFromResource(res: Resources, resId: Int, reqWidth: Int, reqHeight: Int): Bitmap {
+    val options = BitmapFactory.Options().apply {
+        inJustDecodeBounds = true
+        BitmapFactory.decodeResource(res, resId, this)
+        inSampleSize = calculateInSampleSize(this, reqWidth, reqHeight)
+        inJustDecodeBounds = false
+    }
+    return BitmapFactory.decodeResource(res, resId, options)
+}
+
+private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    val height = options.outHeight
+    val width = options.outWidth
+    var inSampleSize = 1
+
+    if (height > reqHeight || width > reqWidth) {
+        val halfHeight = height / 2
+        val halfWidth = width / 2
+
+        while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+            inSampleSize *= 2
+        }
+    }
+    return inSampleSize
 }

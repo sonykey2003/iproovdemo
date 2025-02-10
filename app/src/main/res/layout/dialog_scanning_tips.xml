@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/scanningTipsImage"
+        android:layout_width="match_parent"
+        android:layout_height="612dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/scanning_tips" />
+
+    <Button
+        android:id="@+id/acknowledgeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Continue"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:textColor="@android:color/white"/>
+</LinearLayout>
